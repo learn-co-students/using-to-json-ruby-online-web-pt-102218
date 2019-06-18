@@ -5,7 +5,17 @@ class PostsController < ApplicationController
     @posts = Post.all
   end
 
-  def show; end
+  def show
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: @post.to_json(
+          only: [:title, :description, :id],
+          include: [author: { only: [:name] }],
+        )
+      end
+    end
+  end
 
   def new
     @post = Post.new
